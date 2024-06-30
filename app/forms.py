@@ -69,10 +69,31 @@ class EditionForm(forms.ModelForm):
         model = Edition
         fields = ['name']
     
+
 class PublisherForm(forms.ModelForm):
+    clear_logo = forms.BooleanField(required=False, label="Clear current logo")
+
     class Meta:
         model = Publisher
-        fields = '__all__'
+        fields = ['name', 'country', 'contact_email', 'contact_phone', 'address', 'website', 'description', 'founding_date', 'status', 'logo', 'clear_logo']
+
+    def save(self, commit=True):
+        publisher = super().save(commit=False)
+        
+        # Handle logo updates
+        new_logo = self.cleaned_data.get('logo')
+        if self.cleaned_data.get('clear_logo') and publisher.logo:
+            publisher.logo.delete(save=False)
+            publisher.logo = None
+        elif new_logo:
+            publisher.logo = new_logo
+        
+        if commit:
+            publisher.save()
+        
+        return publisher
+
+
 
 class GenreForm(forms.ModelForm):
     class Meta:

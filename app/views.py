@@ -141,16 +141,21 @@ def publisher_add(request):
         form = PublisherForm()
     return render(request, 'pages/publisher-crud/publisher_add.html', {'form': form})
 
+
+
 def publisher_update(request, publisher_id):
     publisher = get_object_or_404(Publisher, id=publisher_id)
     if request.method == 'POST':
-        form = PublisherForm(request.POST, instance=publisher)
+        form = PublisherForm(request.POST, request.FILES, instance=publisher)
         if form.is_valid():
             form.save()
             return redirect('admin-panel')
     else:
         form = PublisherForm(instance=publisher)
-    return render(request, 'pages/publisher-crud/publisher_update.html', {'form': form})
+    return render(request, 'pages/publisher-crud/publisher_update.html', {'form': form, 'publisher': publisher})
+
+
+
 
 def publisher_delete(request, publisher_id):
     publisher = get_object_or_404(Publisher, id=publisher_id)

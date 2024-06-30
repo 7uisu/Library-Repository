@@ -1,43 +1,7 @@
-# Ignore compiled Python files
-*.pyc
-__pycache__
-
-# Ignore the virtual environment folder
-venv/
-env/
-
-# Ignore local development settings file
-local_settings.py
-
-# Ignore database files
-db.sqlite3
-
-# Ignore media files (user-uploaded content)
-media/
-
-# Ignore static files (collected static files)
-staticfiles/
-
-# Ignore logs and other runtime-generated files
-logs/
-*.log
-*.pot
-*.po
-*.mo
-
-# Ignore macOS folder attributes
-.DS_Store
-
-# Ignore editor-specific files
-.idea/
-.vscode/
-
-# Ignore backup files
+*.py
 *~
-
-# Ignore environment variables file
-.env
-
-# Ignore database dump files
-*.dump
-*.sql
+-pycache_
+venv
+db.sqlite3
+/static
+.DS_Store
