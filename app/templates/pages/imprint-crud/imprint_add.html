@@ -1,0 +1,81 @@
+{% extends 'pages/index.html' %}
+{% load static %}
+
+{% block content %}
+<div class="section-imprint-bg">
+<div class="container add-imprint-form">
+    <h1>Add New Imprint</h1>
+
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.non_field_errors }}
+        
+        <div class="add-imprint-section">
+
+            <div class="add-imprint-logo">
+                <img src="{% static 'images/Person-Icon.jpg' %}" alt="Default Author Logo" class="imprint-logo-image">
+                <br>
+                <label for="id_imprint_logo">Upload Imprint Logo:</label>
+                <div class="file-upload">
+                    {{ form.imprint_logo }}
+                </div>
+                {{ form.logo }}
+                {% if form.imprint_logo.errors %}
+                    {% for error in form.imprint_logo.errors %}
+                        <span class="text-danger">{{ error }}</span><br>
+                    {% endfor %}
+                {% endif %}
+            </div>
+
+            <div class="add-imprint-details">
+                <div class="add-imprint-form-group">
+                    <label for="id_name">Name:</label>
+                    {{ form.name }}
+                    {% if form.name.errors %}
+                        {% for error in form.name.errors %}
+                            <span class="text-danger">{{ error }}</span><br>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+
+                <div class="add-imprint-form-group">
+                    <label for="id_description">Description:</label>
+                    {{ form.description }}
+                    {% if form.description.errors %}
+                        {% for error in form.description.errors %}
+                            <span class="text-danger">{{ error }}</span><br>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+
+                <div class="add-imprint-form-group">
+                    <label for="id_founding_date">Founding Date:</label>
+                    {{ form.founding_date }}
+                    {% if form.founding_date.errors %}
+                        {% for error in form.founding_date.errors %}
+                            <span class="text-danger">{{ error }}</span><br>
+                        {% endfor %}
+                    {% else %}
+                        <small class="text-muted">Format: YYYY-MM-DD (e.g., 2022-01-01)</small>
+                    {% endif %}
+                </div>
+
+                <div class="add-imprint-form-group">
+                    <label for="id_publisher">Publisher:</label>
+                    {{ form.publisher }}
+                    {% if form.publisher.errors %}
+                        {% for error in form.publisher.errors %}
+                            <span class="text-danger">{{ error }}</span><br>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+
+                <div class="add-imprint-form-group">
+                    <button type="submit" class="btn btn-primary">Add Imprint</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+</div>
+{% endblock %}

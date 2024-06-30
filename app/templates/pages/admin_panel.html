@@ -1,0 +1,552 @@
+{% extends 'pages/index.html' %}
+{% load static %}
+
+{% block content %}
+<!-- Admin Panel Section -->
+<div id="section-admin-panel" class="admin-panel">
+    <h1>Admin Panel</h1>
+    
+    <div class="summary-cards">
+        <div class="card">
+            <h3>Total Books</h3>
+            <p>{{ total_books }}</p>
+        </div>
+        <div class="card">
+            <h3>Recent Additions</h3>
+            <ul>
+                {% for book in recent_books %}
+                    <li>{{ book.title }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="card">
+            <h3>Popular Genres</h3>
+            <ul>
+                {% for genre in popular_genres %}
+                    <li>{{ genre.name }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+                
+    </div>
+    
+
+<!-- Authors Section -->
+<div id="section-authors" class="table-section">
+    <div class="section-header">
+        <h2>Authors</h2>
+        <a href="{% url 'author-add' %}" class="add-button">Add</a>
+    </div>
+    <div class="admin-table-wrapper">
+        <table class="admin-table">
+            <thead>
+                <tr>
+                    <th>Profile Picture</th>
+                    <th>Author ID</th>
+                    <th>Last Name</th>
+                    <th>First Name</th>
+                    <th>Pen Names</th>
+                    <th>Birth Date</th>
+                    <th>Nationality</th>
+                    <th>Contact Email</th>
+                    <th>Contact Phone</th>
+                    <th>Website</th>
+                    <th>Biography</th>
+                    <th>Awards & Recognitions</th>
+                    <th class="social-media-column">Social Media (Twitter)</th>
+                    <th class="social-media-column">Social Media (Facebook)</th>
+                    <th class="social-media-column">Social Media (LinkedIn)</th>
+                    <th>Current Publisher</th>
+                    <th>Past Publishers</th>
+                    <th>Deceased</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for author in authors %}
+                    <tr>
+                        <td>
+                            {% if author.picture and author.picture.url %}
+                                <img src="{{ author.picture.url }}" class="profile-picture" alt="Profile Picture">
+                            {% else %}
+                                <img src="{% static 'images/Person-Icon.jpg' %}" alt="Default Profile Picture" class="default-profile-picture">
+                            {% endif %}
+                        </td>
+                        <td>{{ author.id }}</td>
+                        <td>{{ author.last_name }}</td>
+                        <td>{{ author.first_name }}</td>
+                        <td>
+                            {% for pen_name in author.pen_names.all %}
+                                {{ pen_name.pen_name }}{% if not forloop.last %}, {% endif %}
+                            {% endfor %}
+                        </td>
+                        <td>{{ author.date_of_birth }}</td>
+                        <td>{{ author.nationality }}</td>
+                        <td><a href="mailto:{{ author.email }}">{{ author.email }}</a></td>
+                        <td>{{ author.phone_number }}</td>
+                        <td><a href="{{ author.website }}">{{ author.website }}</a></td>
+                        <td class="scrollable-col">{{ author.biography }}</td>
+                        <td>{{ author.awards_recognitions }}</td>
+                        <td class="social-media-column"><a href="{{ author.social_media_twitter }}" target="_blank">{{ author.social_media_twitter }}</a></td>
+                        <td class="social-media-column"><a href="{{ author.social_media_facebook }}" target="_blank">{{ author.social_media_facebook }}</a></td>
+                        <td class="social-media-column"><a href="{{ author.social_media_linkedin }}" target="_blank">{{ author.social_media_linkedin }}</a></td>
+                        <td>{{ author.current_publisher }}</td>
+                        <td>
+                            {% if author.past_publishers.exists %}
+                                {% for publisher in author.past_publishers.all %}
+                                    {{ publisher }}
+                                    {% if not forloop.last %}, {% endif %}
+                                {% endfor %}
+                            {% else %}
+                                None
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if author.is_deceased %}
+                            Yes
+                            {% else %}
+                            No
+                            {% endif %}
+                        </td>
+                        <td>
+                            <div class="dropdown">
+                                <button class="btn btn-secondary dropdown-toggle" type="button" id="authorActions{{ author.id }}" data-bs-toggle="dropdown" aria-expanded="false">
+                                    &#9776;
+                                </button>
+                                <ul class="dropdown-menu" aria-labelledby="authorActions{{ author.id }}">
+                                    <li><a class="dropdown-item" href="{% url 'author-update' author.id %}">Edit</a></li>
+                                    <li><a class="dropdown-item text-danger" href="{% url 'author-delete' author.id %}">Delete</a></li>
+                                </ul>
+                            </div>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+
+    <!-- Publishers Section -->
+    <div id="section-publishers" class="table-section">
+        <div class="section-header">
+            <h2>Publishers</h2>
+            <a href="{% url 'publisher-add' %}" class="add-button">Add</a>
+        </div>
+        <div class="admin-table-wrapper">
+            <table class="admin-table">
+                <thead>
+                    <tr>
+                        <th>Logo</th>
+                        <th>Publisher ID</th>
+                        <th>Name</th>
+                        <th>Country</th>
+                        <th>Contact Email</th>
+                        <th>Contact Phone</th>
+                        <th>Address</th>
+                        <th>Website</th>
+                        <th>Description</th>
+                        <th>Founding Date</th>
+                        <th>Date Added</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for publisher in publishers %}
+                        <tr>
+                            <td>
+                                {% if publisher.logo %}
+                                    <img src="{{ publisher.logo.url }}" class="profile-picture">
+                                {% else %}
+                                    No logo available
+                                {% endif %}
+                            </td>
+                            <td>{{ publisher.id }}</td>
+                            <td>{{ publisher.name }}</td>
+                            <td>{{ publisher.country }}</td>
+                            <td><a href="mailto:{{ publisher.contact_email }}">{{ publisher.contact_email }}</a></td>
+                            <td>{{ publisher.contact_phone }}</td>
+                            <td>{{ publisher.address }}</td>
+                            <td><a href="{{ publisher.website }}">{{ publisher.website }}</a></td>
+                            <td class="scrollable-col">{{ publisher.description }}</td>
+                            <td>{{ publisher.founding_date }}</td>
+                            <td>{{ publisher.date_added }}</td>
+                            <td>{{ publisher.get_status_display }}</td>
+                            <td>
+                                <div class="dropdown">
+                                    <button class="btn btn-secondary dropdown-toggle" type="button" id="publisherActions{{ publisher.id }}" data-bs-toggle="dropdown" aria-expanded="false">
+                                        &#9776;
+                                    </button>
+                                    <ul class="dropdown-menu" aria-labelledby="publisherActions{{ publisher.id }}">
+                                        <li><a class="dropdown-item" href="{% url 'publisher-update' publisher.id %}">Edit</a></li>
+                                        <li><a class="dropdown-item text-danger" href="{% url 'publisher-delete' publisher.id %}">Delete</a></li>
+                                    </ul>
+                                </div>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+        <!-- Imprints Section -->
+        <div id="section-imprints" class="table-section">
+            <div class="section-header">
+                <h2>Imprints</h2>
+                <a href="{% url 'imprint-add' %}" class="add-button">Add</a>
+            </div>
+            <div class="admin-table-wrapper">
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>Logo</th>
+                            <th>Imprint ID</th>
+                            <th>Name</th>
+                            <th>Description</th>
+                            <th>Founding Date</th>
+                            <th>Publisher</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for imprint in imprints %}
+                            <tr>
+                                <td>
+                                    {% if imprint.logo %}
+                                        <img src="{{ imprint.logo.url }}" class="profile-picture">
+                                    {% else %}
+                                        No logo available
+                                    {% endif %}
+                                </td>
+                                <td>{{ imprint.id }}</td>
+                                <td>{{ imprint.name }}</td>
+                                <td>{{ imprint.description }}</td>
+                                <td>{{ imprint.founding_date }}</td>
+                                <td>{{ imprint.publisher.name }}</td>
+                                <td>
+                                    <div class="dropdown">
+                                        <button class="btn btn-secondary dropdown-toggle" type="button" id="imprintActions{{ imprint.id }}" data-bs-toggle="dropdown" aria-expanded="false">
+                                            &#9776;
+                                        </button>
+                                        <ul class="dropdown-menu" aria-labelledby="imprintActions{{ imprint.id }}">
+                                            <li><a class="dropdown-item" href="{% url 'imprint-update' imprint.id %}">Edit</a></li>
+                                            <li><a class="dropdown-item text-danger" href="{% url 'imprint-delete' imprint.id %}">Delete</a></li>
+                                        </ul>
+                                    </div>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+<!-- Books Section -->
+<div id="section-books" class="table-section">
+    <div class="section-header">
+        <h2>Books</h2>
+        <a href="{% url 'book-add' %}" class="add-button">Add</a>
+    </div>
+    <div class="admin-table-wrapper">
+        <table class="admin-table">
+            <thead>
+                <tr>
+                    <th>Cover Image</th>
+                    <th>Book ID</th>
+                    <th>Title</th>
+                    <th>Series</th>
+                    <th>Publication Date</th>
+                    <th>Volume</th>
+                    <th>ISBN</th>
+                    <th>Description</th>
+                    <th>Edition</th>
+                    <th>Language</th>
+                    <th>Genres</th>
+                    <th>Series Cover Image</th>
+                    <th>Ebook ID</th>
+                    <th>Ebook File</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for book in books %}
+                    <tr>
+                        <td>
+                            {% if book.book_cover_image %}
+                                <img src="{{ book.book_cover_image.url }}" class="profile-picture">
+                            {% else %}
+                                No cover image available
+                            {% endif %}
+                        </td>
+                        <td>{{ book.id }}</td>
+                        <td>{{ book.title }}</td>
+                        <td>{{ book.series }}</td>
+                        <td>{{ book.publication_date }}</td>
+                        <td>{{ book.volume }}</td>
+                        <td>{{ book.isbn }}</td>
+                        <td class="scrollable-col">{{ book.description }}</td>
+                        <td>{{ book.edition.name }}</td>
+                        <td>{{ book.language.name }}</td>
+                        <td>
+                            {% for genre in book.genres.all %}
+                                {{ genre.name }}{% if not forloop.last %}, {% endif %}
+                            {% endfor %}
+                        </td>
+                        <td>
+                            {% if book.series_cover_image %}
+                                <img src="{{ book.series_cover_image.url }}" class="profile-picture">
+                            {% else %}
+                                No series cover image available
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if book.ebook %}
+                                {{ book.ebook.id }}
+                            {% else %}
+                                No ebook available
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if book.ebook and book.ebook.ebook_file %}
+                                <a href="{{ book.ebook.ebook_file.url }}">Download</a>
+                            {% else %}
+                                No file available
+                            {% endif %}
+                        </td>
+                        <td>
+                            <div class="dropdown">
+                                <button class="btn btn-secondary dropdown-toggle" type="button" id="bookActions{{ book.id }}" data-bs-toggle="dropdown" aria-expanded="false">
+                                    &#9776;
+                                </button>
+                                <ul class="dropdown-menu" aria-labelledby="bookActions{{ book.id }}">
+                                    <li><a class="dropdown-item" href="{% url 'book-update' book.id %}">Edit</a></li>
+                                    <li><a class="dropdown-item text-danger" href="{% url 'book-delete' book.id %}">Delete</a></li>
+                                </ul>
+                            </div>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{% comment %}
+        <!-- Ebooks Section -->
+        <div id="section-ebooks" class="table-section">
+            <div class="section-header">
+                <h2>Ebooks</h2>
+                <button class="add-button">Add</button>
+            </div>
+            <div class="admin-table-wrapper">
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>Ebook ID</th>
+                            <th>Book</th>
+                            <th>Ebook File</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for ebook in ebooks %}
+                            <tr>
+                                <td>{{ ebook.id }}</td>
+                                <td>{{ ebook.book.title }}</td>
+                                <td>
+                                    {% if ebook.ebook_file %}
+                                        <a href="{{ ebook.ebook_file.url }}">Download</a>
+                                    {% else %}
+                                        No file available
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <div class="dropdown">
+                                        <button class="btn btn-secondary dropdown-toggle" type="button" id="ebookActions{{ ebook.id }}" data-bs-toggle="dropdown" aria-expanded="false">
+                                            &#9776;
+                                        </button>
+                                        <ul class="dropdown-menu" aria-labelledby="ebookActions{{ ebook.id }}">
+                                            <li><a class="dropdown-item" href="#">Edit</a></li>
+                                            <li><a class="dropdown-item text-danger" href="#">Delete</a></li>
+                                        </ul>
+                                    </div>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    
+        <!-- Audiobooks Section -->
+        <div id="section-audiobooks" class="table-section">
+            <div class="section-header">
+                <h2>Audiobooks</h2>
+                <button class="add-button">Add</button>
+            </div>
+            <div class="admin-table-wrapper">
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>Audiobook ID</th>
+                            <th>Book</th>
+                            <th>Audiobook File</th>
+                            <th>Duration</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for audiobook in audiobooks %}
+                            <tr>
+                                <td>{{ audiobook.id }}</td>
+                                <td>{{ audiobook.book.title }}</td>
+                                <td>
+                                    {% if audiobook.audiobook_file %}
+                                        <a href="{{ audiobook.audiobook_file.url }}">Download</a>
+                                    {% else %}
+                                        No file available
+                                    {% endif %}
+                                </td>
+                                <td>{{ audiobook.duration }}</td>
+                                <td>
+                                    <div class="dropdown">
+                                        <button class="btn btn-secondary dropdown-toggle" type="button" id="audiobookActions{{ audiobook.id }}" data-bs-toggle="dropdown" aria-expanded="false">
+                                            &#9776;
+                                        </button>
+                                        <ul class="dropdown-menu" aria-labelledby="audiobookActions{{ audiobook.id }}">
+                                            <li><a class="dropdown-item" href="#">Edit</a></li>
+                                            <li><a class="dropdown-item text-danger" href="#">Delete</a></li>
+                                        </ul>
+                                    </div>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+{% endcomment %}
+
+    <!-- Genres Section -->
+    <div id="section-genres" class="table-section">
+        <div class="section-header">
+            <h2>Genres</h2>
+            <a href="{% url 'genre-add' %}" class="add-button">Add</a>
+        </div>
+        <div class="admin-table-wrapper">
+            <table class="admin-table">
+                <thead>
+                    <tr>
+                        <th>Genre ID</th>
+                        <th>Name</th>
+                        <th>Description</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for genre in genres %}
+                        <tr>
+                            <td>{{ genre.id }}</td>
+                            <td>{{ genre.name }}</td>
+                            <td>{{ genre.description }}</td>
+                            <td>
+                                <div class="dropdown">
+                                    <button class="btn btn-secondary dropdown-toggle" type="button" id="genreActions{{ genre.id }}" data-bs-toggle="dropdown" aria-expanded="false">
+                                        &#9776;
+                                    </button>
+                                    <ul class="dropdown-menu" aria-labelledby="genreActions{{ genre.id }}">
+                                        <li><a class="dropdown-item" href="{% url 'genre-update' genre.id %}">Edit</a></li>
+                                        <li><a class="dropdown-item text-danger" href="{% url 'genre-delete' genre.id %}">Delete</a></li>
+                                    </ul>
+                                </div>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Languages Section -->
+    <div id="section-languages" class="table-section">
+        <div class="section-header">
+            <h2>Languages</h2>
+            <a href="{% url 'language-add' %}" class="add-button">Add</a>
+        </div>
+        <div class="admin-table-wrapper">
+            <table class="admin-table">
+                <thead>
+                    <tr>
+                        <th>Language ID</th>
+                        <th>Name</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for language in languages %}
+                        <tr>
+                            <td>{{ language.id }}</td>
+                            <td>{{ language.name }}</td>
+                            <td>
+                                <div class="dropdown">
+                                    <button class="btn btn-secondary dropdown-toggle" type="button" id="languageActions{{ language.id }}" data-bs-toggle="dropdown" aria-expanded="false">
+                                        &#9776;
+                                    </button>
+                                    <ul class="dropdown-menu" aria-labelledby="languageActions{{ language.id }}">
+                                        <li><a class="dropdown-item" href="{% url 'language-update' language.id %}">Edit</a></li>
+                                        <li><a class="dropdown-item text-danger" href="{% url 'language-delete' language.id %}">Delete</a></li>
+                                    </ul>
+                                </div>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Editions Section -->
+    <div id="section-editions" class="table-section">
+        <div class="section-header">
+            <h2>Editions</h2>
+            <a href="{% url 'edition-add' %}" class="add-button">Add</a>
+        </div>
+        <div class="admin-table-wrapper">
+            <table class="admin-table">
+                <thead>
+                    <tr>
+                        <th>Edition ID</th>
+                        <th>Name</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for edition in editions %}
+                        <tr>
+                            <td>{{ edition.id }}</td>
+                            <td>{{ edition.name }}</td>
+                            <td>
+                                <div class="dropdown">
+                                    <button class="btn btn-secondary dropdown-toggle" type="button" id="editionActions{{ edition.id }}" data-bs-toggle="dropdown" aria-expanded="false">
+                                        &#9776;
+                                    </button>
+                                    <ul class="dropdown-menu" aria-labelledby="editionActions{{ edition.id }}">
+                                        <li><a class="dropdown-item" href="{% url 'edition-update' edition.id %}">Edit</a></li>
+                                        <li><a class="dropdown-item text-danger" href="{% url 'edition-delete' edition.id %}">Delete</a></li>
+                                    </ul>
+                                </div>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+
+
+</div>
+{% endblock %}

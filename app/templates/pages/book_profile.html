@@ -1,0 +1,67 @@
+{% extends 'pages/index.html' %}
+{% load static %}
+
+{% block content %}
+
+<div id="section-book-profile">
+    <div class="book-profile-container">
+        <h1>Book: {{ book.title }}</h1>
+        <div class="book-img">
+            {% if book.book_cover_image %}
+                <p><img src="{{ book.book_cover_image.url }}" class="book-cover"></p>
+            {% else %}
+                <p>No cover image available.</p>
+            {% endif %}
+        </div>
+        <p>Title: {{ book.title }}</p>
+        <p>Description: {{ book.description }}</p>
+        <p>Publication Date: {{ book.publication_date }}</p>
+        <p>ISBN: {{ book.isbn }}</p>
+        <p>Language: {{ book.language.name }}</p>
+
+        <h2>Authors</h2>
+        <ul>
+            {% for author in book.authors.all %}
+                <li>
+                    <a href="{% url 'author-profile' author.id %}">{{ author.first_name }} {{ author.last_name }}</a>
+                </li>
+            {% endfor %}
+        </ul>
+
+        <h2>Genres</h2>
+        <ul>
+            {% for genre in book.genres.all %}
+                <li>{{ genre.name }}</li>
+            {% endfor %}
+        </ul>
+
+        {% if book.collaborating_publishers.exists %}
+            <h2>Collaborating Publishers</h2>
+            <ul>
+                {% for publisher in book.collaborating_publishers.all %}
+                    <li>{{ publisher.name }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+
+        <h2>Ebook</h2>
+        {% if ebook %}
+            <a href="{{ ebook.ebook_file.url }}" class="btn btn-primary" download>Download Ebook</a>
+        {% else %}
+            <p>No ebook available.</p>
+        {% endif %}
+
+        <h2>Audiobook</h2>
+        {% if audiobook %}
+            <audio controls>
+                <source src="{{ audiobook.audiobook_file.url }}" type="audio/mpeg">
+                Your browser does not support the audio element.
+            </audio>
+            <p>Duration: {{ audiobook.duration }}</p>
+        {% else %}
+            <p>No audiobook available.</p>
+        {% endif %}
+    </div>
+</div>
+
+{% endblock %}

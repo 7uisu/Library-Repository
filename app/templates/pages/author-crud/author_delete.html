@@ -1,0 +1,18 @@
+    {% extends 'pages/index.html' %}
+    {% load static %}
+
+    {% block content %}
+<div class="section-author-bg">
+    <div id="section-author-delete" class="delete-author-section">
+    <div class="author-delete-container">
+        <h1>Delete Author</h1>
+        <p>Are you sure you want to delete {{ author.first_name }} {{ author.last_name }}?</p>
+        
+        <form method="post">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger">Confirm Delete</button>
+            <a href="{% url 'admin-panel' %}" class="btn btn-secondary">Cancel</a>
+        </form>
+    </div>
+</div>
+    {% endblock %}

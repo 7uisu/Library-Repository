@@ -1,0 +1,13 @@
+{% load static %}
+
+<div id="section-top-searchbar">
+    <div class="searchbar-container">
+        <div class="searchbar-header">
+            <h1>{% if query %}Search Results{% else %}Browse Books{% endif %}</h1>
+        </div>
+        <form action="{% url 'search' %}" method="get">
+            <input type="text" name="q" value="{{ query|default_if_none:'' }}" placeholder="Search..." class="search-bar">
+            <button type="submit" class="search-button">Search</button>
+        </form>
+    </div>
+</div>

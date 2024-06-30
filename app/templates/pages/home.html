@@ -1,0 +1,42 @@
+{% extends 'pages/index.html' %}
+{% load static %}
+
+
+{% block content %}
+<!--<h1>Demo in JavaScript</h1>
+    <p id="javademo">This is the index page of my Django app.</p>
+    <button type="button" onclick="myFunction()">Click This!</button> -->
+
+    	<!-- Home Section -->
+		<div id="section1">
+			<div id="carouselExampleInterval" class="carousel slide" data-bs-ride="carousel">
+				<div class="carousel-inner">
+					<div class="carousel-item carousel-image bg-img-1 active" data-bs-interval="4000">
+						<img src="{% static 'images/1.png' %}" class="d-block w-100" alt="...">
+					</div>
+					<div class="carousel-item carousel-image bg-img-2" data-bs-interval="4000">
+						<img src="{% static 'images/bg4.jpg' %}" class="d-block w-100" alt="...">
+					</div>
+					<div class="carousel-item carousel-image bg-img-3" data-bs-interval="4000">
+						<img src="{% static 'images/3.png' %}" class="d-block w-100" alt="...">
+					</div>
+				</div>
+			</div>
+
+            
+		
+			<div class="section1-content">
+				<div class="dialogue">
+					<h1>Halcyon Library</h1>
+					<h2>Welcome to a world of EBooks</h2>
+					<form action="{% url 'search' %}" method="get">
+						<input type="text" name="q" value="{{ query }}" placeholder="Search..." class="search-bar">
+						<button type="submit" class="search-button">Search</button>
+					</form>
+				</div>
+			</div><!-- end div section1-content -->
+			
+			
+		</div>
+
+{% endblock %}

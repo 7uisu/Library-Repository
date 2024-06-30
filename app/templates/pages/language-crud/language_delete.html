@@ -1,0 +1,19 @@
+{% extends 'pages/index.html' %}
+{% load static %}
+
+{% block content %}
+<div class="section-genre-language-edition-bg">
+<div class="container delete-language">
+    <h1>Delete Language: {{ language.name }}</h1>
+
+    <form method="post">
+        {% csrf_token %}
+        
+        <p>Are you sure you want to delete the language? "{{ language.name }}"?</p>
+
+        <button type="submit" class="btn btn-danger">Delete</button>
+        <a href="{% url 'admin-panel' %}" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>
+</div>
+{% endblock %}

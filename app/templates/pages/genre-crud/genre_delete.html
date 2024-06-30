@@ -1,0 +1,20 @@
+{% extends 'pages/index.html' %}
+{% load static %}
+
+{% block content %}
+<div class="section-genre-language-edition-bg">
+<div class="container genre-delete-form">
+    <h1>Delete Genre</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.non_field_errors }}
+
+        <div class="delete-genre-section">
+            <p>Are you sure you want to delete the genre "{{ genre.name }}"?</p>
+        </div>
+        <button type="submit" class="btn btn-danger">Confirm Delete</button>
+        <a href="{% url 'genre-list' %}" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>
+</div>
+{% endblock %}

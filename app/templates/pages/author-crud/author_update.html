@@ -1,0 +1,234 @@
+{% extends 'pages/index.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container update-profile-form">
+    <h1>Edit Author Profile</h1>
+
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.non_field_errors }}
+        
+        <div class="update-profile-section">
+            <div class="update-profile-picture">
+                {% if form.instance.picture %}
+                    <img src="{{ form.instance.picture.url }}" alt="Profile Picture" class="update-profile-picture">
+                {% else %}
+                    <img src="{% static 'images/Person-Icon.jpg' %}" alt="Default Profile Picture" class="update-profile-picture">
+                {% endif %}
+                <br>
+                <label for="id_new_picture">Change Profile Picture:</label>
+                <div class="file-upload">
+                    {{ form.new_picture }}
+                </div>
+                {% if form.new_picture.errors %}
+                    {% for error in form.new_picture.errors %}
+                        <span class="text-danger">{{ error }}</span><br>
+                    {% endfor %}
+                {% endif %}
+
+                {% if form.instance.picture %}
+                    <div class="checkbox-container">
+                        <input type="checkbox" name="clear_picture" id="id_clear_picture">
+                        <label for="id_clear_picture">Clear current picture</label>
+                    </div>
+                {% endif %}
+            </div>
+
+            <div class="update-profile-details">
+
+                <!-- Basic Information -->
+                <div class="update-profile-form-group">
+                    <label for="id_first_name">First Name:</label>
+                    <input type="text" id="id_first_name" name="first_name" placeholder="Enter the first name..." value="{{ form.first_name.value }}">
+                    {% if form.first_name.errors %}
+                        {% for error in form.first_name.errors %}
+                            <span class="text-danger">{{ error }}</span><br>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+
+                <div class="update-profile-form-group">
+                    <label for="id_last_name">Last Name:</label>
+                    <input type="text" id="id_last_name" name="last_name" placeholder="Enter the last name..." value="{{ form.last_name.value }}">
+                    {% if form.last_name.errors %}
+                        {% for error in form.last_name.errors %}
+                            <span class="text-danger">{{ error }}</span><br>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+
+                <div class="update-profile-form-group">
+                    <label for="id_nationality">Nationality:</label>
+                    <input type="text" id="id_nationality" name="nationality" placeholder="Enter the nationality..." value="{{ form.nationality.value }}">
+                    {% if form.nationality.errors %}
+                        {% for error in form.nationality.errors %}
+                            <span class="text-danger">{{ error }}</span><br>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+
+                <div class="update-profile-form-group">
+                    <label for="id_date_of_birth">Date of Birth:</label>
+                    <input type="text" id="id_date_of_birth" name="date_of_birth" placeholder="YYYY-MM-DD" value="{{ form.date_of_birth.value }}">
+                    {% if form.date_of_birth.errors %}
+                        {% for error in form.date_of_birth.errors %}
+                            <span class="text-danger">{{ error }}</span><br>
+                        {% endfor %}
+                    {% else %}
+                        <small class="text-muted">Format: YYYY-MM-DD (e.g., 1990-12-31)</small>
+                    {% endif %}
+                </div>
+
+                <!-- Contact Information -->
+                <div class="update-profile-form-group">
+                    <label for="id_email">Email:</label>
+                    <input type="email" id="id_email" name="email" placeholder="Enter the email..." value="{{ form.email.value }}">
+                    {% if form.email.errors %}
+                        {% for error in form.email.errors %}
+                            <span class="text-danger">{{ error }}</span><br>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+
+                <div class="update-profile-form-group">
+                    <label for="id_phone_number">Phone Number:</label>
+                    <input type="text" id="id_phone_number" name="phone_number" placeholder="Enter the phone number..." value="{{ form.phone_number.value }}">
+                    {% if form.phone_number.errors %}
+                        {% for error in form.phone_number.errors %}
+                            <span class="text-danger">{{ error }}</span><br>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+
+                <div class="update-profile-form-group">
+                    <label for="id_mailing_address">Mailing Address:</label>
+                    <input type="text" id="id_mailing_address" name="mailing_address" placeholder="Enter the mailing address..." value="{{ form.mailing_address.value }}">
+                    {% if form.mailing_address.errors %}
+                        {% for error in form.mailing_address.errors %}
+                            <span class="text-danger">{{ error }}</span><br>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+
+                <!-- Biography and Awards & Recognitions -->
+                <div class="update-profile-form-group">
+                    <label for="id_biography">Biography:</label>
+                    <textarea id="id_biography" name="biography" placeholder="Enter the biography...">{{ form.biography.value }}</textarea>
+                    {% if form.biography.errors %}
+                        {% for error in form.biography.errors %}
+                            <span class="text-danger">{{ error }}</span><br>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+
+                <div class="update-profile-form-group">
+                    <label for="id_awards_recognitions">Awards & Recognitions:</label>
+                    <textarea id="id_awards_recognitions" name="awards_recognitions" placeholder="Enter awards and recognitions...">{{ form.awards_recognitions.value }}</textarea>
+                    {% if form.awards_recognitions.errors %}
+                        {% for error in form.awards_recognitions.errors %}
+                            <span class="text-danger">{{ error }}</span><br>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+
+                <!-- Social Media Links -->
+                <div class="update-profile-form-group">
+                    <label for="id_social_media_twitter">Social Media (Twitter):</label>
+                    <input type="text" id="id_social_media_twitter" name="social_media_twitter" placeholder="Enter Twitter handle..." value="{{ form.social_media_twitter.value }}">
+                    {% if form.social_media_twitter.errors %}
+                        {% for error in form.social_media_twitter.errors %}
+                            <span class="text-danger">{{ error }}</span><br>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+
+                <div class="update-profile-form-group">
+                    <label for="id_social_media_facebook">Social Media (Facebook):</label>
+                    <input type="text" id="id_social_media_facebook" name="social_media_facebook" placeholder="Enter Facebook profile URL..." value="{{ form.social_media_facebook.value }}">
+                    {% if form.social_media_facebook.errors %}
+                        {% for error in form.social_media_facebook.errors %}
+                            <span class="text-danger">{{ error }}</span><br>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+
+                <div class="update-profile-form-group">
+                    <label for="id_social_media_linkedin">Social Media (LinkedIn):</label>
+                    <input type="text" id="id_social_media_linkedin" name="social_media_linkedin" placeholder="Enter LinkedIn profile URL..." value="{{ form.social_media_linkedin.value }}">
+                    {% if form.social_media_linkedin.errors %}
+                        {% for error in form.social_media_linkedin.errors %}
+                            <span class="text-danger">{{ error }}</span><br>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+
+                <!-- Current Publisher -->
+                <div class="update-profile-form-group">
+                    <label for="id_current_publisher">Current Publisher:</label>
+                    <input type="text" id="id_current_publisher" name="current_publisher" placeholder="Enter the current publisher..." value="{{ form.current_publisher.value }}">
+                    {% if form.current_publisher.errors %}
+                        {% for error in form.current_publisher.errors %}
+                            <span class="text-danger">{{ error }}</span><br>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+
+                <!-- Past Publishers -->
+                <div class="update-profile-form-group">
+                    <label for="id_past_publishers">Past Publishers:</label>
+                    <input type="text" id="id_past_publishers" name="past_publishers" placeholder="Enter past publishers..." value="{{ form.past_publishers.value }}">
+                    {% if form.past_publishers.errors %}
+                        {% for error in form.past_publishers.errors %}
+                            <span class="text-danger">{{ error }}</span><br>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+
+                <!-- Is Deceased -->
+                <div class="update-profile-form-group">
+                    <label for="id_is_deceased">Is Deceased:</label>
+                    <input type="checkbox" id="id_is_deceased" name="is_deceased" {% if form.is_deceased.value %}checked{% endif %}>
+                    {% if form.is_deceased.errors %}
+                        {% for error in form.is_deceased.errors %}
+                            <span class="text-danger">{{ error }}</span><br>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+
+                <!-- Pen Names with Select2 and AJAX Search -->
+                <div class="update-profile-form-group">
+                    <label for="id_pen_names">Pen Names:</label>
+                    <select id="id_pen_names" name="pen_names" multiple>
+                        {% for pen_name in form.fields.pen_names.queryset %}
+                        <option value="{{ pen_name.pk }}" {% if pen_name in form.initial.pen_names.all %}selected{% endif %}>
+                            {{ pen_name }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                    {% if form.pen_names.errors %}
+                        {% for error in form.pen_names.errors %}
+                            <span class="text-danger">{{ error }}</span><br>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+
+                <!-- Pen Names Display -->
+                <div class="update-profile-form-group">
+                    <label for="current_pen_names">Current Pen Names:</label>
+                    <ul id="current_pen_names">
+                        {% for pen_name in author.pen_names.all %}
+                            <li>{{ pen_name.pen_name }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+
+                <!-- Submit Button -->
+                <div class="update-profile-form-group">
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock %}

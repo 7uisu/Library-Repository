@@ -1,0 +1,24 @@
+{% extends 'pages/index.html' %}
+{% load static %}
+
+{% block content %}
+<div class="section-genre-language-edition-bg">
+<div class="container update-edition-form">
+    <h1>Update Edition - {{ edition.name }}</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.non_field_errors }}
+        <div class="form-group">
+            <label for="id_name">Name:</label>
+            {{ form.name }}
+            {% if form.name.errors %}
+                {% for error in form.name.errors %}
+                    <span class="text-danger">{{ error }}</span><br>
+                {% endfor %}
+            {% endif %}
+        </div>
+        <button type="submit" class="btn btn-primary">Update Edition</button>
+    </form>
+</div>
+</div>
+{% endblock %}

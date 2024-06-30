@@ -1,0 +1,33 @@
+{% extends 'pages/index.html' %}
+{% load static %}
+
+{% block content %}
+<div class="section-genre-language-edition-bg">
+<div class="container add-language-form">
+    <h1>Add New Language</h1>
+
+    <form method="post">
+        {% csrf_token %}
+        {{ form.non_field_errors }}
+        
+        <div class="add-language-section">
+            <div class="add-language-details">
+                <div class="add-language-form-group">
+                    <label for="id_name">Name:</label>
+                    {{ form.name }}
+                    {% if form.name.errors %}
+                        {% for error in form.name.errors %}
+                            <span class="text-danger">{{ error }}</span><br>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+
+                <div class="add-language-form-group">
+                    <button type="submit" class="btn btn-primary">Add Language</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+</div>
+{% endblock %}

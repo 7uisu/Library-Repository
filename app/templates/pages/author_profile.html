@@ -1,0 +1,65 @@
+{% extends 'pages/index.html' %}
+{% load static %}
+
+{% block content %}
+
+<div id="section-author-profile">
+    <div class="author-profile-container">
+
+        <h1>Author: {{ author.first_name }} {{ author.last_name }}</h1>
+        <div>
+            <div class="author-img">
+                {% if author.picture %}
+                    <p><img src="{{ author.picture.url }}" class="author-cover"></p>
+                {% else %}
+                    <p>No profile picture available.</p>
+                {% endif %}
+            </div>
+            <p>Name: {{ author.first_name }} {{ author.last_name }}</p>
+            <p>Nationality: {{ author.nationality }}</p>
+            <p>Date of Birth: {{ author.date_of_birth }}</p>
+            <p>Email: <a href="mailto:{{ author.email }}">{{ author.email }}</a></p>
+            <p>Website: <a href="{{ author.website }}">{{ author.website }}</a></p>
+            <p>Twitter: <a href="{{ author.social_media_twitter }}">{{ author.social_media_twitter }}</a></p>
+            <p>Facebook: <a href="{{ author.social_media_facebook }}">{{ author.social_media_facebook }}</a></p>
+            <p>LinkedIn: <a href="{{ author.social_media_linkedin }}">{{ author.social_media_linkedin }}</a></p>
+            <p>Phone Number: {{ author.phone_number }}</p>
+            <p>Mailing Address: {{ author.mailing_address }}</p>
+            <p>Biography: {{ author.biography }}</p>
+            <p>Awards & Recognitions: {{ author.awards_recognitions }}</p>
+            <p>Current Publisher: {{ author.current_publisher }}</p>
+            <p>Past Publishers: 
+                {% for publisher in author.past_publishers.all %}
+                    {{ publisher.name }}{% if not forloop.last %}, {% endif %}
+                {% endfor %}
+            </p>
+            {% if author.is_deceased %}
+                <p>Author is Deceased</p>
+            {% endif %}
+        </div>
+
+        <h2>Pen Names</h2>
+        {% if pen_names %}
+            <ul>
+                {% for pen_name in pen_names %}
+                    <li>{% if pen_name.is_primary %}Main: {% endif %}{{ pen_name.pen_name }}</li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>This author has no pen names.</p>
+        {% endif %}
+
+        <h2>Books by this Author</h2>
+        {% if books %}
+            <ul>
+                {% for book in books %}
+                    <li>{{ book.title }}</li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>This author has no books.</p>
+        {% endif %}
+
+    </div>
+</div>
+{% endblock %}
